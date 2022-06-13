@@ -100,7 +100,7 @@ class Game{
     // get x from ID of clicked cell
     const x = +evt.target.id;
 
-    console.log(x, this);
+    //console.log(x, this);
   
     // get next spot in column (if none, ignore click)
     const y = this.findSpotForCol(x);

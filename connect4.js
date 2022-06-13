@@ -35,8 +35,9 @@ class Game{
     // make column tops (clickable area for adding a piece to that column)
     const top = document.createElement('tr');
     top.setAttribute('id', 'column-top');
-    top.addEventListener('click', this.handleClick.bind(this));
-  
+    this.handleGameClick = this.handleClick.bind(this);
+    top.addEventListener('click', this.handleGameClick);
+    
     for (let x = 0; x < this.width; x++) {
       const headCell = document.createElement('td');
       headCell.setAttribute('id', x);
@@ -84,6 +85,7 @@ class Game{
     piece.style.top = -50 * (y + 2);
   
     const spot = document.getElementById(`${y}-${x}`);
+    //console.log(piece);
     spot.append(piece);
   }
   
@@ -91,6 +93,9 @@ class Game{
   
   endGame(msg) {
     alert(msg);
+    //console.log("endgame", this);
+    const top = document.querySelector('#column-top');
+    top.removeEventListener("click", this.handleGameClick);
   }
   
   /** handleClick: handle click of column top to play piece */
@@ -114,11 +119,13 @@ class Game{
     
     // check for win
     if (this.checkForWin()) {
+      this.gameOver = true;
       return this.endGame(`Player ${this.currPlayer.color} won!`);
     }
     
     // check for tie
     if (this.board.every(row => row.every(cell => cell))) {
+      this.gameOver = true;
       return this.endGame('Tie!');
     }
       
@@ -174,7 +181,7 @@ class Player{
 document.getElementById('start-game').addEventListener('click',() => {
   let p1 = new Player(document.getElementById('player-1-color').value);
   let p2 = new Player(document.getElementById('player-2-color').value);
-  console.log(p1, p2);
+  //console.log(p1, p2);
   new Game(p1, p2);
 });
 
